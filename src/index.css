@@ -1,0 +1,61 @@
+@font-face {
+  font-family: 'Proxima Nova Th';
+  src: url('./assets/fonts/ProximaNova-Extrabld.woff2') format('woff2'),
+      url('./assets/fonts/ProximaNova-Extrabld.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Rg';
+  src: url('./assets/fonts/ProximaNova-Bold.woff2') format('woff2'),
+      url('./assets/fonts/ProximaNova-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Rg';
+  src: url('./assets/fonts/ProximaNova-Regular.woff2') format('woff2'),
+      url('./assets/fonts/ProximaNova-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Lt';
+  src: url('./assets/fonts/ProximaNova-Light.woff2') format('woff2'),
+      url('./assets/fonts/ProximaNova-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Proxima Nova Bl';
+  src: url('./assets/fonts/ProximaNova-Black.woff2') format('woff2'),
+      url('./assets/fonts/ProximaNova-Black.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Proxima Nova Rg';
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.data-field {
+  font-family: 'Roboto Mono', monospace;
+}
