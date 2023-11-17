@@ -8,19 +8,19 @@ import settingsImage from '../../settings.svg';
 class DelimiterWrap extends Component {
 
 	state = {
-		delimiter: '',
+		delimiter: ',',
 		columnText: '',
 		delimitedText: '',
 		isSettingsVisible: false,
-		explode: null,
+		explode: '\n',
 		isRemoveNewLine: true,
 		isRemoveDuplicate: false,
 		quotes: null
 	};
 
-	changeDelimiter = (event) => {
-		this.setState({ delimiter: event.target.value });
-	};
+	// changeDelimiter = (event) => {
+	// 	this.setState({ delimiter: event.target.value });
+	// };
 
 	changeColumnText = (event) => {
 		this.setState({ columnText: event.target.value });
@@ -33,22 +33,38 @@ class DelimiterWrap extends Component {
 	};
 
 	delimitData = () => {
-		let delimitedText = this.state.delimitedText;
-		if (this.state.explode === null) {
-			delimitedText = this.state.columnText.split(' ').join(this.state.delimiter);
-		}
-		if (this.state.explode === '\\n') {
-			delimitedText = this.state.columnText.split(' ').join(this.state.delimiter + '\n');
-		}
-		if (this.state.explode !== '\\n') {
-			if (this.state.isRemoveNewLine === 'false') {
-				delimitedText = this.state.columnText.split(/\n/).join(this.state.delimiter);
-				delimitedText = delimitedText.split(this.state.delimiter).join(',\n');
-			} else {
-				delimitedText = this.state.columnText.split(/\n/).join(this.state.delimiter);
-			}
-			// delimitedText = this.state.columnText.split(this.state.explode).join(this.state.delimiter);
-		}
+		let delimitedText = this.state.columnText;
+		const isTidy = this.state.explode === '\n' && !this.state.isRemoveNewLine;
+		delimitedText = this.state.columnText
+			.split(this.state.explode)
+			.map(item => this.state.quotes ? this.state.quotes + item + this.state.quotes : item)
+			.join(isTidy ? this.state.delimiter + '\n' : this.state.delimiter );
+
+		// if (this.state.explode === '\n' && !this.state.isRemoveNewLine) {
+
+		// 	delimitedText = delimitedText.split('\n').join();
+		// }
+		// if (this.state.explode === '\n') {
+		// 	delimitedText = this.state.columnText.split('\n').join(this.state.delimiter);
+		// }
+		// if (this.state.explode === ';') {
+		// 	delimitedText = this.state.columnText.split(';').join(this.state.delimiter);
+		// }
+		// if (this.state.explode === ' ') {
+		// 	delimitedText = this.state.columnText.split(' ').join(this.state.delimiter);
+		// }
+		// if (this.state.explode === ',') {
+		// 	delimitedText = this.state.columnText.split(',').join(this.state.delimiter);
+		// }
+		// if (this.state.explode !== '\\n') {
+		// 	if (this.state.isRemoveNewLine === 'false') {
+		// 		delimitedText = this.state.columnText.split(/\n/).join(this.state.delimiter);
+		// 		delimitedText = delimitedText.split(this.state.delimiter).join(',\n');
+		// 	} else {
+		// 		delimitedText = this.state.columnText.split(/\n/).join(this.state.delimiter);
+		// 	}
+		// 	// delimitedText = this.state.columnText.split(this.state.explode).join(this.state.delimiter);
+		// }
 		if (this.state.isRemoveDuplicate === 'true') {
 			const delimitedArray = delimitedText.split(this.state.delimiter)
 			let uniqueDelimitedTextArray = []
@@ -58,14 +74,15 @@ class DelimiterWrap extends Component {
 				}
 				return 1;
 			});
+			delimitedText = uniqueDelimitedTextArray;
 		}
 		if (this.state.quotes === '""') {
-			delimitedText = this.state.columnText.split(/\n/);
-			delimitedText = delimitedText.map(item => '"' + item + '"').join(', ');
+			// delimitedText = this.state.columnText.split(/\n/);
+			delimitedText = delimitedText.map(item => '"' + item + '"').join(this.state.delimiter);
 		}
 		if (this.state.quotes === "''") {
-			delimitedText = this.state.columnText.split(/\n/);
-			delimitedText = delimitedText.map(item => "'" + item + "'").join(', ');
+			// delimitedText = this.state.columnText.split(/\n/);
+			delimitedText = delimitedText.map(item => "'" + item + "'").join(this.state.delimiter);
 		}
 		this.setState({
 			delimitedText
@@ -85,13 +102,13 @@ class DelimiterWrap extends Component {
 
 	selectExplode = (event) => {
 		this.setState({
-			explode: event.target.value,
-			delimiter: event.target.value
+			explode: event.target.value === 'newline' ? '\n' : event.target.value
+			// delimiter: event.target.value
 		});
 	};
 
 	removeNewLine = (event) => {
-		this.setState({ isRemoveNewLine: event.target.value });
+		this.setState({ isRemoveNewLine: event.target.value === 'true' ? true : false });
 	};
 
 	removeDuplicateToggle = (event) => {
@@ -99,7 +116,9 @@ class DelimiterWrap extends Component {
 	};
 
 	addQuotes = (event) => {
-		this.setState({ quotes: event.target.value });
+		this.setState({ 
+			quotes: event.target.value === 'noquote' ? null : event.target.value
+		});
 	};
 
 	render() {
@@ -109,7 +128,7 @@ class DelimiterWrap extends Component {
 					changeColumnText={(event) => this.changeColumnText(event)}
 					columnText={this.state.columnText} />
 				<Controls
-					changeDelimiter={(event) => this.changeDelimiter(event)}
+					// changeDelimiter={(event) => this.changeDelimiter(event)}
 					delimitData={this.delimitData}
 					reset={this.reset} />
 				<DelimiterData
@@ -124,6 +143,7 @@ class DelimiterWrap extends Component {
 				{
 					this.state.isSettingsVisible &&
 					<ConverterSettings
+						isExplodedNewlines={this.state.explode === '\n'}
 						selectExplode={(event) => this.selectExplode(event)}
 						removeNewLine={(event) => this.removeNewLine(event)}
 						removeDuplicateToggle={(event) => this.removeDuplicateToggle(event)}
