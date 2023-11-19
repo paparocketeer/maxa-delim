@@ -18,9 +18,9 @@ class DelimiterWrap extends Component {
 		quotes: null
 	};
 
-	// changeDelimiter = (event) => {
-	// 	this.setState({ delimiter: event.target.value });
-	// };
+	changeDelimiter = (event) => {
+		this.setState({ delimiter: event.target.value });
+	};
 
 	changeColumnText = (event) => {
 		this.setState({ columnText: event.target.value });
@@ -128,7 +128,7 @@ class DelimiterWrap extends Component {
 					changeColumnText={(event) => this.changeColumnText(event)}
 					columnText={this.state.columnText} />
 				<Controls
-					// changeDelimiter={(event) => this.changeDelimiter(event)}
+					changeDelimiter={(event) => this.changeDelimiter(event)}
 					delimitData={this.delimitData}
 					reset={this.reset} />
 				<DelimiterData
